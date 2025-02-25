@@ -1,0 +1,15 @@
+port ${PORT}
+requirepass ${PASSWORD}
+masterauth ${PASSWORD}
+protected-mode no
+daemonize no
+appendonly yes
+bind 0.0.0.0
+
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-timeout 15000
+cluster-announce-ip ${IP}
+cluster-announce-port ${PORT}
+cluster-announce-bus-port 1${PORT}
+

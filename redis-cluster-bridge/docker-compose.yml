@@ -1,0 +1,88 @@
+# 描述 Compose 文件的版本信息
+version: "3.9"
+
+# 定义服务，可以多个
+services:
+  redis-cluster:
+    image: redis
+    command: sh -c "sleep 5 && \
+      redis-cli -a ${PASSWORD} --cluster create\
+      ${IP}:7001 ${IP}:7002 ${IP}:7003 ${IP}:7004 ${IP}:7005 ${IP}:7006 \
+      --cluster-replicas 1 --cluster-yes"
+    restart: no
+    depends_on:
+      - redis-7001
+      - redis-7002
+      - redis-7003
+      - redis-7004
+      - redis-7005
+      - redis-7006
+
+  redis-7001: # 服务名称
+    image: redis # 创建容器时所需的镜像
+    container_name: redis-7001 # 容器名称
+    restart: always # 容器总是重新启动
+    ports:
+      - "7001:7001"
+      - "17001:17001"
+    volumes: # 数据卷，目录挂载
+      - ${CURR_DIR}/7001/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ${CURR_DIR}/7001/data:/data
+    env_file:
+      - .env
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  redis-7002:
+    image: redis
+    container_name: redis-7002
+    ports:
+      - "7002:7002"
+      - "17002:17002"
+    volumes:
+      - ${CURR_DIR}/7002/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ${CURR_DIR}/7002/data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  redis-7003:
+    image: redis
+    container_name: redis-7003
+    ports:
+      - "7003:7003"
+      - "17003:17003"
+    volumes:
+      - ${CURR_DIR}/7003/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ${CURR_DIR}/7003/data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  redis-7004:
+    image: redis
+    container_name: redis-7004
+    ports:
+      - "7004:7004"
+      - "17004:17004"
+    volumes:
+      - ${CURR_DIR}/7004/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ${CURR_DIR}/7004/data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  redis-7005:
+    image: redis
+    container_name: redis-7005
+    ports:
+      - "7005:7005"
+      - "17005:17005"
+    volumes:
+      - ${CURR_DIR}/7005/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ${CURR_DIR}/7005/data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  redis-7006:
+    image: redis
+    container_name: redis-7006
+    ports:
+      - "7006:7006"
+      - "17006:17006"
+    volumes:
+      - ${CURR_DIR}/7006/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ${CURR_DIR}/7006/data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
